@@ -1,0 +1,196 @@
+### 1. Testar CPF com tamanho incorreto (Deve retornar erro 400)
+POST http://localhost:3000/ciclista
+Content-Type: application/json
+
+{
+    "nome": "Teste Tamanho CPF",
+    "email": "erro@gmail.com",
+    "senha": "123",
+    "cpf": "12345",
+    "endereco": "Rua Teste, 0",
+    "celular": "48900000000"
+}
+
+### 2. Cadastrar Ciclista 1 - Marcos (Público)
+POST http://localhost:3000/ciclista
+Content-Type: application/json
+
+{
+    "nome": "Marcos",
+    "email": "marcos@gmail.com",
+    "senha": "123",
+    "cpf": "12345678912",
+    "endereco": "Rua das Flores, 123",
+    "celular": "48999998888"
+}
+
+### 3. Cadastrar Ciclista 2 - Ana (Público)
+POST http://localhost:3000/ciclista
+Content-Type: application/json
+
+{
+    "nome": "Ana",
+    "email": "ana@gmail.com",
+    "senha": "123",
+    "cpf": "22233344455",
+    "endereco": "Av. Brasil, 456",
+    "celular": "48988887777"
+}
+
+### 4. Cadastrar Ciclista 3 - Roberto (Público)
+POST http://localhost:3000/ciclista
+Content-Type: application/json
+
+{
+    "nome": "Roberto",
+    "email": "roberto@gmail.com",
+    "senha": "123",
+    "cpf": "98765432100",
+    "endereco": "Rua Central, 789",
+    "celular": "48977776666"
+}
+
+### 5. Fazer Login com Marcos (Armazena o token automaticamente)
+# @name loginReq
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "marcos@gmail.com",
+    "senha": "123"
+}
+
+### 6. Listar Todos os Ciclistas (Privado)
+GET http://localhost:3000/ciclistas
+Authorization: {{loginReq.response.body.token}}
+
+### 7. Consultar Ciclista por ID (Privado)
+GET http://localhost:3000/ciclista/1
+Authorization: {{loginReq.response.body.token}}
+
+### 8. Consultar Ciclista por Nome (Route Param)
+GET http://localhost:3000/ciclista/buscarNome/Marcos
+Authorization: {{loginReq.response.body.token}}
+
+### 9. Consultar Ciclista por Nome Inexistente (Deve retornar 404)
+GET http://localhost:3000/ciclista/buscarNome/Nome Inexistente
+Authorization: {{loginReq.response.body.token}}
+
+### 10. Atualizar Ciclista 1 (Privado)
+PUT http://localhost:3000/ciclista/1
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "nome": "Marcos",
+    "email": "marcos@gmail.com",
+    "endereco": "Rua das Flores, 456",
+    "celular": "48999998888"
+}
+
+### 11. Cadastrar Bicicleta 1 (Marcos)
+POST http://localhost:3000/bicicleta
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "modelo": "Caloi Two",
+    "tipo": "MTB",
+    "aro": 29,
+    "idCiclista": 1
+}
+
+### 12. Cadastrar Bicicleta 2 (Ana)
+POST http://localhost:3000/bicicleta
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "modelo": "Sense Fun EVO",
+    "tipo": "Passeio",
+    "aro": 29,
+    "idCiclista": 2
+}
+
+### 13. Cadastrar Bicicleta 3 (Roberto)
+POST http://localhost:3000/bicicleta
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "modelo": "OGGI Big Wheel",
+    "tipo": "MTB",
+    "aro": 29,
+    "idCiclista": 3
+}
+
+### 14. Cadastrar Agendamento 1 (Data: 25/10/2026 - Marcos)
+POST http://localhost:3000/agendamento
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "data": "2026-10-25",
+    "hora": "14:00:00",
+    "idBicicleta": 1,
+    "idCiclista": 1
+}
+
+### 15. Cadastrar Agendamento 2 (Data: 05/10/2026 - Ana)
+POST http://localhost:3000/agendamento
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "data": "2026-10-05",
+    "hora": "10:30:00",
+    "idBicicleta": 2,
+    "idCiclista": 2
+}
+
+### 16. Cadastrar Agendamento 3 (Data: 15/10/2026 - Roberto)
+POST http://localhost:3000/agendamento
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "data": "2026-10-15",
+    "hora": "16:00:00",
+    "idBicicleta": 3,
+    "idCiclista": 3
+}
+
+### 17. Atualizar Agendamento 1 (Altera data para 30/10/2026)
+PUT http://localhost:3000/agendamento/1
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "data": "2026-10-30",
+    "hora": "15:30:00"
+}
+
+### 18. Atualizar Agendamento Inexistente (Deve retornar erro 404)
+PUT http://localhost:3000/agendamento/999
+Content-Type: application/json
+Authorization: {{loginReq.response.body.token}}
+
+{
+    "data": "2026-10-30",
+    "hora": "15:30:00"
+}
+
+### 19. Listar Agenda Ordenada por Data (Deve retornar a ordem: 05/10, 15/10 e 30/10)
+GET http://localhost:3000/agendamentos
+Authorization: {{loginReq.response.body.token}}
+
+### 20. Testar Rota Protegida Sem Token (Deve retornar erro 401/403)
+GET http://localhost:3000/agendamentos
+
+### 21. Deletar Ciclista Inexistente (Deve retornar 404)
+DELETE http://localhost:3000/ciclista/999
+Authorization: {{loginReq.response.body.token}}
+
+### 22. Deletar Ciclista 3 (Roberto)
+DELETE http://localhost:3000/ciclista/3
+Authorization: {{loginReq.response.body.token}}

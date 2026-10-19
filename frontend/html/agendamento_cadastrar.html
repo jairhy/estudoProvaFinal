@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/styleCad.css">
+    <script src="../js/agendamentoCad.js" defer></script>
+    <title>Cadastro de Agendamento</title>
+</head>
+<body>
+    <header>
+        <nav><a href="../index.html">Home</a></nav>
+        <br><hr><br>
+    </header>
+    <main>
+        <h1>Cadastrar Agendamento</h1>
+        <form>
+            <label for="data">Data</label><br>
+            <input type="date" id="data" required><br><br>
+
+            <label for="hora">Horário</label><br>
+            <input type="time" id="hora" required><br><br>
+
+            <label for="idBicicleta">Código da Bicicleta</label><br>
+            <input type="number" id="idBicicleta" required><br><br>
+
+            <label for="idCiclista">Código do Ciclista</label><br>
+            <input type="number" id="idCiclista" required><br><br>
+
+            <button id="btn_cadastrar">Cadastrar</button>
+        </form>
+        <div id="resposta" class="resposta"></div>
+    </main>
+</body>
+</html>
